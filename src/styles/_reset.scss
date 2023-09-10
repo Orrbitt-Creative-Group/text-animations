@@ -1,0 +1,97 @@
+*,
+*:before,
+*:after {
+    box-sizing: border-box;
+    // make no-repeat the default
+    background-repeat: no-repeat;
+}
+
+* {
+    margin: 0;
+}
+
+body {
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+}
+
+img,
+picture,
+video,
+figure,
+canvas,
+svg {
+    display: block;
+    height: auto;
+    max-width: 100%;
+}
+
+input,
+button,
+textarea,
+select {
+    font: inherit;
+    color: inherit;
+    letter-spacing: inherit;
+    background-color: transparent;
+    padding: 0.25em 0.375em;
+    border: 1px solid WindowFrame;
+}
+
+[type='color'],
+[type='range'] {
+    border-width: 0;
+    padding: 0;
+}
+
+button,
+input[type='submit'],
+[role='button'],
+details > summary,
+[aria-controls] {
+    cursor: pointer;
+}
+
+textarea {
+    resize: vertical;
+}
+
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    overflow-wrap: break-word;
+}
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+// https://www.scottohara.me/blog/2019/01/12/lists-and-safari.html
+ul[role='list'],
+ol[role='list'] {
+    list-style: none;
+}
+
+html:focus-within {
+    scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html:focus-within {
+        scroll-behavior: auto;
+    }
+}
+
+[aria-busy='true'] {
+    cursor: progress;
+}
+
+[aria-disabled='true'],
+[disabled] {
+    cursor: default;
+}

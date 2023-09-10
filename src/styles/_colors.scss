@@ -1,0 +1,31 @@
+body {
+    --bg: #fafffe;
+    --text: #00170d;
+    --primary: #2f735b;
+    --secondary: #ae3f1e;
+
+    &.dark-mode {
+        --bg: #0e1110;
+        --text: #d3f3ed;
+        --primary: #60d6bb;
+        --secondary: #f2dd6e;
+    }
+}
+
+a {
+    color: var(--primary);
+    text-decoration: none;
+
+    &:hover,
+    &:focus {
+        color: var(--secondary);
+    }
+}
+
+.primary {
+    color: var(--primary);
+}
+
+.secondary {
+    color: var(--secondary);
+}

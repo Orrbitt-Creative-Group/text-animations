@@ -1,0 +1,83 @@
+@use './styles/reset';
+@use './styles/colors';
+@use './styles/toggle';
+@use './styles/type';
+@use './styles/ease';
+
+@import './fonts/junction/junction.css';
+
+html {
+    font-size: 16px;
+    line-height: 1.6;
+}
+
+body {
+    font-family: 'Junction';
+    font-variant-ligatures: no-common-ligatures;
+    font-size: 1.2rem;
+    color: var(--text);
+    background-color: var(--bg);
+}
+
+.topbar {
+    position: absolute;
+    width: 100%;
+    border-bottom: 1px solid var(--text);
+    padding: 1rem 10%;
+}
+
+.effects {
+    padding-top: 100px;
+    padding-inline: 10%;
+}
+
+.effect {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+:root {
+    --char_translate: #{size(5)};
+    --char_step: 0.025s;
+    --char_ease: #{ease.$inQuad};
+    --char_duration: 0.5s;
+}
+
+.animate-text {
+    .char,
+    .word {
+        position: relative;
+        transform-style: preserve-3d;
+    }
+    .char {
+        position: relative;
+        opacity: 0;
+        --char_delay: calc(var(--char_index) * var(--char_step));
+    }
+
+    &.animate-in {
+        .char {
+            transition-duration: var(--char_duration);
+            transition-timing-function: var(--char_ease);
+            transition-property: opacity;
+            transition-delay: var(--char_delay);
+            opacity: 1;
+        }
+    }
+
+    &[data-anim='chars-enter'] {
+        perspective: 300px;
+        perspective-origin: bottom center;
+        --char_duration: 0.3s;
+        // --char_ease: ease-in;
+        .char {
+            transform: translateY(-40%) translateZ(5px) rotateX(40deg) scale(1);
+        }
+        &.animate-in .char {
+            transform: none;
+            transition-property: opacity, transform;
+        }
+    }
+}
