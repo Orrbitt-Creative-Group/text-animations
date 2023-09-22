@@ -5,19 +5,29 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Text Effects</title>
-
+	<link rel="stylesheet" href="./fonts/junction/junction.css">
 	<link rel="stylesheet" href="style.scss">
 </head>
 
 <body>
 
+
+
 	<!-- <h1>Text Effects</h1> -->
 	<div class="topbar">
 		<div class="toggle">
-			<input class="toggle__input" type="checkbox" id="dark-mode" checked />
+			<input class="toggle__input" type="checkbox" id="dark-mode" />
 			<label class="toggle__label small-caps" for="dark-mode">
 				<div class="toggle__switch"></div>
 				dark mode
+			</label>
+		</div>
+
+		<div class="toggle">
+			<input class="toggle__input" type="checkbox" id="show-all" />
+			<label class="toggle__label small-caps" for="show-all">
+				<div class="toggle__switch"></div>
+				show all
 			</label>
 		</div>
 	</div>
@@ -25,8 +35,8 @@
 	<div class="effects">
 		<div class="effect">
 			<div class="effect__inner">
-				<div class="effect__title">chars enter</div>
-				<h1 class="animate-text" data-anim="chars-enter">
+				<div class="effect__title">chars fade up</div>
+				<h1 class="effect__text animate-text" data-anim="chars-fade-down">
 					The night unfurled before us like a long ribbon of asphalt, stretching endlessly into the horizon
 				</h1>
 			</div>
@@ -35,7 +45,7 @@
 		<div class="effect">
 			<div class="effect__inner">
 				<div class="effect__title">chars swipe</div>
-				<h1 class="animate-text title-2" data-anim="chars-swipe">
+				<h1 class="effect__text animate-text title-2" data-anim="chars-swipe">
 					The car hummed with the promise of freedom, its engine a symphony of rebellion and desire.
 				</h1>
 			</div>
@@ -43,9 +53,27 @@
 
 		<div class="effect">
 			<div class="effect__inner">
-				<div class="effect__title">chars swipe</div>
-				<h1 class="animate-text title-2" data-anim="chars-swipe">
+				<div class="effect__title">words swipe</div>
+				<h1 class="effect__text animate-text title-2" data-anim="words-swipe" data-split-by="words">
 					We wandered, minds aflame with the chaotic beauty of the urban jungle, the cacophony of voices and sirens a symphony of rebellion.
+				</h1>
+			</div>
+		</div>
+
+		<div class="effect">
+			<div class="effect__inner">
+				<div class="effect__title">chars slide</div>
+				<h1 class="effect__text animate-text title-2" data-anim="chars-slide">
+					The night unfurled before us like a long ribbon of asphalt, stretching endlessly into the horizon
+				</h1>
+			</div>
+		</div>
+
+		<div class="effect">
+			<div class="effect__inner">
+				<div class="effect__title">faded chars</div>
+				<h1 class="effect__text animate-text" data-anim="faded-chars">
+					The car hummed with the promise of freedom, its engine a symphony of rebellion and desire.
 				</h1>
 			</div>
 		</div>

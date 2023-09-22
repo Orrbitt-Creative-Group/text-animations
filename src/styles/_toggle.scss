@@ -3,19 +3,22 @@
 
     &__switch {
         background-color: #ccc;
-        border-radius: 34px;
-        height: 34px;
-        width: 60px;
+        --height: 24px;
+        --width: calc(var(--height) * 2);
+        border-radius: var(--height);
+        height: var(--height);
+        width: var(--width);
         transition: background-color 0.2s ease;
         margin-right: 0.3rem;
+        position: relative;
 
         &:after {
             content: '';
             position: absolute;
             top: 2px;
             left: 2px;
-            width: 30px;
-            height: 30px;
+            width: calc(var(--height) - 4px);
+            height: calc(var(--height) - 4px);
             background-color: #fff;
             border-radius: 50%;
             transition: 0.2s ease;
@@ -27,6 +30,7 @@
         cursor: pointer;
         display: flex;
         align-items: center;
+        font-size: 0.9rem;
     }
 
     &__input {
@@ -38,7 +42,7 @@
         .toggle__switch {
             background-color: var(--primary);
             &:after {
-                transform: translateX(26px);
+                transform: translateX(var(--height));
             }
         }
     }

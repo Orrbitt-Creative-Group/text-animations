@@ -1,12 +1,15 @@
 body {
     --bg: #fafffe;
+    --bg2: #e4eeec;
     --text: #00170d;
     --primary: #2f735b;
     --secondary: #ae3f1e;
 
     &.dark-mode {
         --bg: #0e1110;
+        --bg2: #262a28;
         --text: #d3f3ed;
+        --text2: #67817c;
         --primary: #60d6bb;
         --secondary: #f2dd6e;
     }
