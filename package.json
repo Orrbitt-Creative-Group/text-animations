@@ -2,7 +2,6 @@
     "name": "text-animations",
     "version": "1.0.0",
     "description": "",
-    "main": "index.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
         "dev": "parcel src/index.html",
@@ -16,7 +15,7 @@
         "parcel": "^2.9.3"
     },
     "dependencies": {
-        "gsap": "npm:@gsap/business@^3.12.2",
+        "gsap": "^3.12.2",
         "typescript": "^5.2.2"
     }
 }

@@ -6,7 +6,7 @@ settings:
 
 dependencies:
   gsap:
-    specifier: npm:@gsap/business@^3.12.2
+    specifier: ^3.12.2
     version: /@gsap/business@3.12.2
   typescript:
     specifier: ^5.2.2
@@ -45,7 +45,7 @@ packages:
     dev: true
 
   /@gsap/business@3.12.2:
-    resolution: {integrity: sha512-AkkhzjaOOJ5Jk9Qyo5PB4C0sL+uUj3SsAN+F+HvM71QVs/jISXgwAyrap2CjK8CzTXrC3T74sHkoOVlqU0Fbfg==}
+    resolution: {integrity: sha512-AkkhzjaOOJ5Jk9Qyo5PB4C0sL+uUj3SsAN+F+HvM71QVs/jISXgwAyrap2CjK8CzTXrC3T74sHkoOVlqU0Fbfg==, tarball: https://registry.npmjs.org/@gsap/business/-/business-3.12.2.tgz}
     dev: false
 
   /@lezer/common@0.15.12:
@@ -1708,6 +1708,7 @@ packages:
   /node-gyp-build-optional-packages@5.0.7:
     resolution: {integrity: sha512-YlCCc6Wffkx0kHkmam79GKvDQ6x+QZkMjFGrIMxgFNILFvGSbCp2fCBC55pGTT9gVaz8Na5CLmxt/urtzRv36w==}
     hasBin: true
+    requiresBuild: true
     dev: true
     optional: true
 
