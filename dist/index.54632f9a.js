@@ -142,7 +142,7 @@
       this[globalName] = mainExports;
     }
   }
-})({"huhxN":[function(require,module,exports) {
+})({"2ralK":[function(require,module,exports) {
 var global = arguments[3];
 var HMR_HOST = null;
 var HMR_PORT = null;
@@ -227,9 +227,15 @@ if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== "undefined") {
     var hostname = getHostname();
     var port = getPort();
     var protocol = HMR_SECURE || location.protocol == "https:" && !/localhost|127.0.0.1|0.0.0.0/.test(hostname) ? "wss" : "ws";
-    var ws = new WebSocket(protocol + "://" + hostname + (port ? ":" + port : "") + "/");
+    var ws;
+    try {
+        ws = new WebSocket(protocol + "://" + hostname + (port ? ":" + port : "") + "/");
+    } catch (err) {
+        if (err.message) console.error(err.message);
+        ws = {};
+    }
     // Web extension context
-    var extCtx = typeof chrome === "undefined" ? typeof browser === "undefined" ? null : browser : chrome;
+    var extCtx = typeof browser === "undefined" ? typeof chrome === "undefined" ? null : chrome : browser;
     // Safari doesn't support sourceURL in error stacks.
     // eval may also be disabled via CSP, so do a quick check.
     var supportsSourceURL = false;
@@ -293,7 +299,7 @@ if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== "undefined") {
         }
     };
     ws.onerror = function(e) {
-        console.error(e.message);
+        if (e.message) console.error(e.message);
     };
     ws.onclose = function() {
         console.warn("[parcel] \uD83D\uDEA8 Connection to the HMR server was lost");
@@ -303,7 +309,7 @@ function removeErrorOverlay() {
     var overlay = document.getElementById(OVERLAY_ID);
     if (overlay) {
         overlay.remove();
-        console.log("[parcel] ✨ Error resolved");
+        console.log("[parcel] \u2728 Error resolved");
     }
 }
 function createErrorOverlay(diagnostics) {
@@ -319,13 +325,13 @@ ${frame.code}`;
         errorHTML += `
       <div>
         <div style="font-size: 18px; font-weight: bold; margin-top: 20px;">
-          🚨 ${diagnostic.message}
+          \u{1F6A8} ${diagnostic.message}
         </div>
         <pre>${stack}</pre>
         <div>
           ${diagnostic.hints.map((hint)=>"<div>\uD83D\uDCA1 " + hint + "</div>").join("")}
         </div>
-        ${diagnostic.documentation ? `<div>📝 <a style="color: violet" href="${diagnostic.documentation}" target="_blank">Learn more</a></div>` : ""}
+        ${diagnostic.documentation ? `<div>\u{1F4DD} <a style="color: violet" href="${diagnostic.documentation}" target="_blank">Learn more</a></div>` : ""}
       </div>
     `;
     }
@@ -421,15 +427,10 @@ async function hmrApplyUpdates(assets) {
             let promises = assets.map((asset)=>{
                 var _hmrDownload;
                 return (_hmrDownload = hmrDownload(asset)) === null || _hmrDownload === void 0 ? void 0 : _hmrDownload.catch((err)=>{
-                    // Web extension bugfix for Chromium
-                    // https://bugs.chromium.org/p/chromium/issues/detail?id=1255412#c12
-                    if (extCtx && extCtx.runtime && extCtx.runtime.getManifest().manifest_version == 3) {
-                        if (typeof ServiceWorkerGlobalScope != "undefined" && global instanceof ServiceWorkerGlobalScope) {
-                            extCtx.runtime.reload();
-                            return;
-                        }
-                        asset.url = extCtx.runtime.getURL("/__parcel_hmr_proxy__?url=" + encodeURIComponent(asset.url + "?t=" + Date.now()));
-                        return hmrDownload(asset);
+                    // Web extension fix
+                    if (extCtx && extCtx.runtime && extCtx.runtime.getManifest().manifest_version == 3 && typeof ServiceWorkerGlobalScope != "undefined" && global instanceof ServiceWorkerGlobalScope) {
+                        extCtx.runtime.reload();
+                        return;
                     }
                     throw err;
                 });
@@ -646,7 +647,7 @@ function init() {
 }
 window.addEventListener("load", init);
 
-},{"gsap":"9opQi","gsap/ScrollTrigger":"AMvUX","gsap/SplitText":"54FYr","./scripts/toggles":"9ik1L","./scripts/split-text":"3p8va"}],"9opQi":[function(require,module,exports) {
+},{"gsap":"fPSuC","gsap/ScrollTrigger":"7wnFk","./scripts/toggles":"9ik1L","./scripts/split-text":"3p8va","gsap/SplitText":"63tvY"}],"fPSuC":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "gsap", ()=>gsapWithCSS);
@@ -679,7 +680,7 @@ var _csspluginJs = require("./CSSPlugin.js");
 var gsapWithCSS = (0, _gsapCoreJs.gsap).registerPlugin((0, _csspluginJs.CSSPlugin)) || (0, _gsapCoreJs.gsap), // to protect from tree shaking
 TweenMaxWithCSS = gsapWithCSS.core.Tween;
 
-},{"./gsap-core.js":"a7G5v","./CSSPlugin.js":"kBkyZ","@parcel/transformer-js/src/esmodule-helpers.js":"3dkiX"}],"a7G5v":[function(require,module,exports) {
+},{"./gsap-core.js":"05eeC","./CSSPlugin.js":"l02JQ","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"05eeC":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "GSCache", ()=>GSCache);
@@ -3684,7 +3685,7 @@ _coreReady = 1;
 _windowExists() && _wake();
 var Power0 = _easeMap.Power0, Power1 = _easeMap.Power1, Power2 = _easeMap.Power2, Power3 = _easeMap.Power3, Power4 = _easeMap.Power4, Linear = _easeMap.Linear, Quad = _easeMap.Quad, Cubic = _easeMap.Cubic, Quart = _easeMap.Quart, Quint = _easeMap.Quint, Strong = _easeMap.Strong, Elastic = _easeMap.Elastic, Back = _easeMap.Back, SteppedEase = _easeMap.SteppedEase, Bounce = _easeMap.Bounce, Sine = _easeMap.Sine, Expo = _easeMap.Expo, Circ = _easeMap.Circ;
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"3dkiX"}],"3dkiX":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"gkKU3":[function(require,module,exports) {
 exports.interopDefault = function(a) {
     return a && a.__esModule ? a : {
         default: a
@@ -3697,7 +3698,7 @@ exports.defineInteropFlag = function(a) {
 };
 exports.exportAll = function(source, dest) {
     Object.keys(source).forEach(function(key) {
-        if (key === "default" || key === "__esModule" || dest.hasOwnProperty(key)) return;
+        if (key === "default" || key === "__esModule" || Object.prototype.hasOwnProperty.call(dest, key)) return;
         Object.defineProperty(dest, key, {
             enumerable: true,
             get: function() {
@@ -3714,7 +3715,7 @@ exports.export = function(dest, destName, get) {
     });
 };
 
-},{}],"kBkyZ":[function(require,module,exports) {
+},{}],"l02JQ":[function(require,module,exports) {
 /*!
  * CSSPlugin 3.12.2
  * https://greensock.com
@@ -4662,7 +4663,7 @@ var CSSPlugin = {
 });
 (0, _gsapCoreJs.gsap).registerPlugin(CSSPlugin);
 
-},{"./gsap-core.js":"a7G5v","@parcel/transformer-js/src/esmodule-helpers.js":"3dkiX"}],"AMvUX":[function(require,module,exports) {
+},{"./gsap-core.js":"05eeC","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"7wnFk":[function(require,module,exports) {
 /*!
  * ScrollTrigger 3.12.2
  * https://greensock.com
@@ -6394,7 +6395,7 @@ ScrollTrigger.core = {
 };
 _getGSAP() && gsap.registerPlugin(ScrollTrigger);
 
-},{"./Observer.js":"3uqsB","@parcel/transformer-js/src/esmodule-helpers.js":"3dkiX"}],"3uqsB":[function(require,module,exports) {
+},{"./Observer.js":"aAWxM","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"aAWxM":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "Observer", ()=>Observer);
@@ -6850,7 +6851,132 @@ Observer.getById = function(id) {
 };
 _getGSAP() && gsap.registerPlugin(Observer);
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"3dkiX"}],"54FYr":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"9ik1L":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+class Toggle {
+    constructor(input, onToggle){
+        this.checked = false;
+        this.input = input;
+        this.onToggle = onToggle;
+        this.input.addEventListener("change", ()=>{
+            this.checked = this.input.checked;
+            this.onToggle(this.checked);
+        });
+    }
+}
+class ClassToggle extends Toggle {
+    constructor(input, className, element = document.body){
+        super(input, ()=>{
+            if (this.checked) this.element.classList.add(className);
+            else this.element.classList.remove(className);
+        });
+        this.element = element;
+    }
+}
+let inputDarkMode = document.querySelector("input#dark-mode");
+if (inputDarkMode instanceof HTMLInputElement) new ClassToggle(inputDarkMode, "dark-mode");
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"3p8va":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "splitText", ()=>splitText);
+parcelHelpers.export(exports, "charsSetProps", ()=>charsSetProps);
+parcelHelpers.export(exports, "wordsSetProps", ()=>wordsSetProps);
+parcelHelpers.export(exports, "linesSetProps", ()=>linesSetProps);
+var _splitText = require("gsap/SplitText");
+const easeInSine = (x)=>1 - Math.cos(x * Math.PI / 2);
+const easeOutSine = (x)=>Math.sin(x * Math.PI / 2);
+const easeOutCirc = (x)=>Math.sqrt(1 - Math.pow(x - 1, 2));
+function splitText(el) {
+    let content = el.innerHTML;
+    content = content.replace(/(<([^>]+)>)/gi, "");
+    el.setAttribute("aria-label", content);
+    let splitBy = el.dataset.splitBy || "chars,words,lines";
+    let charEase = el.dataset.charEase;
+    const title = new (0, _splitText.SplitText)(el, {
+        type: splitBy,
+        lineThreshold: 0.3,
+        charsClass: "char",
+        wordsClass: "word",
+        linesClass: "line"
+    });
+    if (splitBy.includes("lines")) linesSetProps(title, charEase);
+    else if (splitBy.includes("words")) wordsSetProps(title.words);
+    else if (title.chars) charsSetProps(title.chars, charEase);
+    if (title.chars) title.chars.forEach((char)=>{
+        let letter = char.innerHTML;
+        char.setAttribute("data-char", letter);
+    });
+    if (charEase) {
+        let charStep = el.dataset.charStep ? Number(el.dataset.charStep) : undefined;
+        setCharEase(title, charStep);
+    }
+    el.style.setProperty("--chars_count", `${title.chars.length}`);
+    el.style.setProperty("--words_count", `${title.words.length}`);
+    el.classList.add("split");
+}
+function charsSetProps(chars, charEase) {
+    chars.forEach((char, char_index)=>{
+        char.style.setProperty("--char_index", `${char_index}`);
+    });
+}
+function wordsSetProps(words) {
+    let char_index = 0;
+    words.forEach((word, word_index)=>{
+        word.style.setProperty("--word_index", `${word_index}`);
+        let chars = word.querySelectorAll(".char");
+        chars.forEach((char, char_index_word)=>{
+            char.style.setProperty("--char_index_word", `${char_index_word}`);
+            char.style.setProperty("--char_index", `${char_index}`);
+            char_index++;
+        });
+    });
+}
+function linesSetProps(title, charEase) {
+    let lines = title.lines;
+    let chars = title.chars;
+    let word_index = 0;
+    let char_index = 0;
+    lines.forEach((line, line_index)=>{
+        line.style.setProperty("--line_index", `${line_index}`);
+        let words = line.querySelectorAll(".word");
+        let chars = line.querySelectorAll(".char");
+        words.forEach((word, word_index_line)=>{
+            word.style.setProperty("--word_index_line", `${word_index_line}`);
+            word.style.setProperty("--word_index", `${word_index}`);
+            word_index++;
+        });
+        chars.forEach((char, char_index_line)=>{
+            char.style.setProperty("--char_index_line", `${char_index_line}`);
+            char.style.setProperty("--char_index", `${char_index}`);
+            char_index++;
+        });
+    });
+}
+function setCharEase(title, charStep = 0.015) {
+    console.log(charStep);
+    let charsCount = title.chars.length;
+    let linesCount = title.lines.length;
+    let chars = title.chars;
+    chars.forEach((char)=>{
+        let line = char.closest(".line");
+        if (!(line instanceof HTMLElement)) return;
+        let lineIndex = line.style.getPropertyValue("--line_index");
+        let charIndexLine = char.style.getPropertyValue("--char_index_line");
+        let totalCharsLine = line.querySelectorAll(".char").length;
+        let lineProgress = Number(lineIndex) / linesCount;
+        let charProgress = Number(charIndexLine) / totalCharsLine;
+        let charEased = easeOutSine(charProgress);
+        let lineEased = easeOutSine(lineProgress);
+        let lineDelay = lineEased * linesCount * charStep * 20;
+        let charDelay = charEased * totalCharsLine * charStep + lineDelay;
+        char.style.setProperty("--char_delay", `${charDelay.toFixed(3)}s`);
+        line.style.setProperty("--line_eased", `${lineEased.toFixed(3)}`);
+    });
+}
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","gsap/SplitText":"63tvY"}],"63tvY":[function(require,module,exports) {
 /*!
  * SplitText: 3.12.2
  * https://greensock.com
@@ -7206,7 +7332,7 @@ var SplitText = /*#__PURE__*/ function() {
 SplitText.version = "3.12.2";
 SplitText.register = _initCore;
 
-},{"./utils/strings.js":"fy7r9","@parcel/transformer-js/src/esmodule-helpers.js":"3dkiX"}],"fy7r9":[function(require,module,exports) {
+},{"./utils/strings.js":"2xmbo","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"2xmbo":[function(require,module,exports) {
 /*!
  * strings: 3.12.2
  * https://greensock.com
@@ -7277,131 +7403,6 @@ function emojiSafeSplit(text, delimiter, trim, preserveSpaces) {
     return result;
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"3dkiX"}],"9ik1L":[function(require,module,exports) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-class Toggle {
-    constructor(input, onToggle){
-        this.checked = false;
-        this.input = input;
-        this.onToggle = onToggle;
-        this.input.addEventListener("change", ()=>{
-            this.checked = this.input.checked;
-            this.onToggle(this.checked);
-        });
-    }
-}
-class ClassToggle extends Toggle {
-    constructor(input, className, element = document.body){
-        super(input, ()=>{
-            if (this.checked) this.element.classList.add(className);
-            else this.element.classList.remove(className);
-        });
-        this.element = element;
-    }
-}
-let inputDarkMode = document.querySelector("input#dark-mode");
-if (inputDarkMode instanceof HTMLInputElement) new ClassToggle(inputDarkMode, "dark-mode");
-
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"3dkiX"}],"3p8va":[function(require,module,exports) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "splitText", ()=>splitText);
-parcelHelpers.export(exports, "charsSetProps", ()=>charsSetProps);
-parcelHelpers.export(exports, "wordsSetProps", ()=>wordsSetProps);
-parcelHelpers.export(exports, "linesSetProps", ()=>linesSetProps);
-var _splitText = require("gsap/SplitText");
-const easeInSine = (x)=>1 - Math.cos(x * Math.PI / 2);
-const easeOutSine = (x)=>Math.sin(x * Math.PI / 2);
-const easeOutCirc = (x)=>Math.sqrt(1 - Math.pow(x - 1, 2));
-function splitText(el) {
-    let content = el.innerHTML;
-    content = content.replace(/(<([^>]+)>)/gi, "");
-    el.setAttribute("aria-label", content);
-    let splitBy = el.dataset.splitBy || "chars,words,lines";
-    let charEase = el.dataset.charEase;
-    const title = new (0, _splitText.SplitText)(el, {
-        type: splitBy,
-        lineThreshold: 0.3,
-        charsClass: "char",
-        wordsClass: "word",
-        linesClass: "line"
-    });
-    if (splitBy.includes("lines")) linesSetProps(title, charEase);
-    else if (splitBy.includes("words")) wordsSetProps(title.words);
-    else if (title.chars) charsSetProps(title.chars, charEase);
-    if (title.chars) title.chars.forEach((char)=>{
-        let letter = char.innerHTML;
-        char.setAttribute("data-char", letter);
-    });
-    if (charEase) {
-        let charStep = el.dataset.charStep ? Number(el.dataset.charStep) : undefined;
-        setCharEase(title, charStep);
-    }
-    el.style.setProperty("--chars_count", `${title.chars.length}`);
-    el.style.setProperty("--words_count", `${title.words.length}`);
-    el.classList.add("split");
-}
-function charsSetProps(chars, charEase) {
-    chars.forEach((char, char_index)=>{
-        char.style.setProperty("--char_index", `${char_index}`);
-    });
-}
-function wordsSetProps(words) {
-    let char_index = 0;
-    words.forEach((word, word_index)=>{
-        word.style.setProperty("--word_index", `${word_index}`);
-        let chars = word.querySelectorAll(".char");
-        chars.forEach((char, char_index_word)=>{
-            char.style.setProperty("--char_index_word", `${char_index_word}`);
-            char.style.setProperty("--char_index", `${char_index}`);
-            char_index++;
-        });
-    });
-}
-function linesSetProps(title, charEase) {
-    let lines = title.lines;
-    let chars = title.chars;
-    let word_index = 0;
-    let char_index = 0;
-    lines.forEach((line, line_index)=>{
-        line.style.setProperty("--line_index", `${line_index}`);
-        let words = line.querySelectorAll(".word");
-        let chars = line.querySelectorAll(".char");
-        words.forEach((word, word_index_line)=>{
-            word.style.setProperty("--word_index_line", `${word_index_line}`);
-            word.style.setProperty("--word_index", `${word_index}`);
-            word_index++;
-        });
-        chars.forEach((char, char_index_line)=>{
-            char.style.setProperty("--char_index_line", `${char_index_line}`);
-            char.style.setProperty("--char_index", `${char_index}`);
-            char_index++;
-        });
-    });
-}
-function setCharEase(title, charStep = 0.015) {
-    console.log(charStep);
-    let charsCount = title.chars.length;
-    let linesCount = title.lines.length;
-    let chars = title.chars;
-    chars.forEach((char)=>{
-        let line = char.closest(".line");
-        if (!(line instanceof HTMLElement)) return;
-        let lineIndex = line.style.getPropertyValue("--line_index");
-        let charIndexLine = char.style.getPropertyValue("--char_index_line");
-        let totalCharsLine = line.querySelectorAll(".char").length;
-        let lineProgress = Number(lineIndex) / linesCount;
-        let charProgress = Number(charIndexLine) / totalCharsLine;
-        let charEased = easeOutSine(charProgress);
-        let lineEased = easeOutSine(lineProgress);
-        let lineDelay = lineEased * linesCount * charStep * 20;
-        let charDelay = charEased * totalCharsLine * charStep + lineDelay;
-        char.style.setProperty("--char_delay", `${charDelay.toFixed(3)}s`);
-        line.style.setProperty("--line_eased", `${lineEased.toFixed(3)}`);
-    });
-}
-
-},{"gsap/SplitText":"54FYr","@parcel/transformer-js/src/esmodule-helpers.js":"3dkiX"}]},["huhxN","gg0zR"], "gg0zR", "parcelRequire5197")
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}]},["2ralK","gg0zR"], "gg0zR", "parcelRequire5197")
 
 //# sourceMappingURL=index.54632f9a.js.map
