@@ -25,7 +25,7 @@ class Triggers {
         let trigger = new ScrollTrigger({
             trigger: el,
             start: '15% 50%',
-            end: '80% 50%',
+            end: '100% 50%',
             onEnter: () => {
                 el.classList.add('in-view')
                 this.inView = el
@@ -40,13 +40,13 @@ class Triggers {
                 el.classList.add('in-view')
                 this.inView = el
             },
-            markers: true,
+            markers: false,
         })
         this.triggers.push(trigger)
         return trigger
     }
 
-    onOffInViewClass = () => {
+    switchOffAndOn = () => {
         if (!this.inView) return
         this.inView.classList.remove('in-view')
         setTimeout(() => {
@@ -58,8 +58,15 @@ class Triggers {
 }
 
 function init() {
-    let effects = document.querySelectorAll<HTMLElement>('.effect')
-    let triggers = new Triggers(Array.from(effects))
+    const effects = document.querySelectorAll<HTMLElement>('.effect')
+    const triggers = new Triggers(Array.from(effects))
+
+    const effectsContainer = document.querySelector('.effects')
+    if (effectsContainer instanceof HTMLElement) {
+        effectsContainer.addEventListener('click', () => {
+            triggers.switchOffAndOn()
+        })
+    }
 
     effects.forEach((effect) => {
         let text = effect.querySelector('.animate-text')
@@ -68,17 +75,17 @@ function init() {
         }
     })
 
-    let selectEase = new SelectEl({
-        options: easeOpts,
-        prop: '--char_ease',
-        currentStart: 'quad_in',
-        onChange: () => {
-            triggers.onOffInViewClass()
-        },
-    })
+    // let selectEase = new SelectEl({
+    //     options: easeOpts,
+    //     prop: '--char_ease',
+    //     currentStart: 'quad_in',
+    //     onChange: () => {
+    //         triggers.switchOffAndOn()
+    //     },
+    // })
 
-    let topBar = document.querySelector('.topbar')
-    if (topBar instanceof HTMLElement) topBar.appendChild(selectEase.container)
+    // let topBar = document.querySelector('.topbar')
+    // if (topBar instanceof HTMLElement) topBar.appendChild(selectEase.container)
 }
 
 window.addEventListener('load', init)

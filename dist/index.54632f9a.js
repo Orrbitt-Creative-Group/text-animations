@@ -577,8 +577,6 @@ function hmrAccept(bundle /*: ParcelRequire */ , id /*: string */ ) {
 var _gsap = require("gsap");
 var _scrollTrigger = require("gsap/ScrollTrigger");
 var _splitText = require("gsap/SplitText");
-var _easeOptions = require("./scripts/ease-options");
-var _select = require("./scripts/select");
 var _toggles = require("./scripts/toggles");
 var _splitText1 = require("./scripts/split-text");
 (0, _gsap.gsap).registerPlugin((0, _splitText.SplitText));
@@ -587,7 +585,7 @@ class Triggers {
     constructor(els){
         this.triggers = [];
         this.inView = false;
-        this.onOffInViewClass = ()=>{
+        this.switchOffAndOn = ()=>{
             if (!this.inView) return;
             this.inView.classList.remove("in-view");
             setTimeout(()=>{
@@ -603,7 +601,7 @@ class Triggers {
         let trigger = new (0, _scrollTrigger.ScrollTrigger)({
             trigger: el,
             start: "15% 50%",
-            end: "80% 50%",
+            end: "100% 50%",
             onEnter: ()=>{
                 el.classList.add("in-view");
                 this.inView = el;
@@ -618,33 +616,37 @@ class Triggers {
                 el.classList.add("in-view");
                 this.inView = el;
             },
-            markers: true
+            markers: false
         });
         this.triggers.push(trigger);
         return trigger;
     }
 }
 function init() {
-    let effects = document.querySelectorAll(".effect");
-    let triggers = new Triggers(Array.from(effects));
+    const effects = document.querySelectorAll(".effect");
+    const triggers = new Triggers(Array.from(effects));
+    const effectsContainer = document.querySelector(".effects");
+    if (effectsContainer instanceof HTMLElement) effectsContainer.addEventListener("click", ()=>{
+        triggers.switchOffAndOn();
+    });
     effects.forEach((effect)=>{
         let text = effect.querySelector(".animate-text");
         if (text instanceof HTMLElement) (0, _splitText1.splitText)(text);
     });
-    let selectEase = new (0, _select.SelectEl)({
-        options: (0, _easeOptions.easeOpts),
-        prop: "--char_ease",
-        currentStart: "quad_in",
-        onChange: ()=>{
-            triggers.onOffInViewClass();
-        }
-    });
-    let topBar = document.querySelector(".topbar");
-    if (topBar instanceof HTMLElement) topBar.appendChild(selectEase.container);
+// let selectEase = new SelectEl({
+//     options: easeOpts,
+//     prop: '--char_ease',
+//     currentStart: 'quad_in',
+//     onChange: () => {
+//         triggers.switchOffAndOn()
+//     },
+// })
+// let topBar = document.querySelector('.topbar')
+// if (topBar instanceof HTMLElement) topBar.appendChild(selectEase.container)
 }
 window.addEventListener("load", init);
 
-},{"gsap":"9opQi","gsap/ScrollTrigger":"AMvUX","gsap/SplitText":"54FYr","./scripts/toggles":"9ik1L","./scripts/split-text":"3p8va","./scripts/ease-options":"93yEu","./scripts/select":"cjqq2"}],"9opQi":[function(require,module,exports) {
+},{"gsap":"9opQi","gsap/ScrollTrigger":"AMvUX","gsap/SplitText":"54FYr","./scripts/toggles":"9ik1L","./scripts/split-text":"3p8va"}],"9opQi":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "gsap", ()=>gsapWithCSS);
@@ -7309,11 +7311,15 @@ parcelHelpers.export(exports, "charsSetProps", ()=>charsSetProps);
 parcelHelpers.export(exports, "wordsSetProps", ()=>wordsSetProps);
 parcelHelpers.export(exports, "linesSetProps", ()=>linesSetProps);
 var _splitText = require("gsap/SplitText");
+const easeInSine = (x)=>1 - Math.cos(x * Math.PI / 2);
+const easeOutSine = (x)=>Math.sin(x * Math.PI / 2);
+const easeOutCirc = (x)=>Math.sqrt(1 - Math.pow(x - 1, 2));
 function splitText(el) {
     let content = el.innerHTML;
     content = content.replace(/(<([^>]+)>)/gi, "");
     el.setAttribute("aria-label", content);
     let splitBy = el.dataset.splitBy || "chars,words,lines";
+    let charEase = el.dataset.charEase;
     const title = new (0, _splitText.SplitText)(el, {
         type: splitBy,
         lineThreshold: 0.3,
@@ -7321,18 +7327,22 @@ function splitText(el) {
         wordsClass: "word",
         linesClass: "line"
     });
-    if (splitBy.includes("lines")) linesSetProps(title.lines);
+    if (splitBy.includes("lines")) linesSetProps(title, charEase);
     else if (splitBy.includes("words")) wordsSetProps(title.words);
-    else if (title.chars) charsSetProps(title.chars);
+    else if (title.chars) charsSetProps(title.chars, charEase);
     if (title.chars) title.chars.forEach((char)=>{
         let letter = char.innerHTML;
         char.setAttribute("data-char", letter);
     });
+    if (charEase) {
+        let charStep = el.dataset.charStep ? Number(el.dataset.charStep) : undefined;
+        setCharEase(title, charStep);
+    }
     el.style.setProperty("--chars_count", `${title.chars.length}`);
     el.style.setProperty("--words_count", `${title.words.length}`);
     el.classList.add("split");
 }
-function charsSetProps(chars) {
+function charsSetProps(chars, charEase) {
     chars.forEach((char, char_index)=>{
         char.style.setProperty("--char_index", `${char_index}`);
     });
@@ -7349,7 +7359,9 @@ function wordsSetProps(words) {
         });
     });
 }
-function linesSetProps(lines) {
+function linesSetProps(title, charEase) {
+    let lines = title.lines;
+    let chars = title.chars;
     let word_index = 0;
     let char_index = 0;
     lines.forEach((line, line_index)=>{
@@ -7368,97 +7380,28 @@ function linesSetProps(lines) {
         });
     });
 }
-
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"3dkiX","gsap/SplitText":"54FYr"}],"93yEu":[function(require,module,exports) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "easeOpts", ()=>easeOpts);
-const easeOpts = [
-    "sine_in",
-    "sine_out",
-    "sine_inout",
-    "quad_in",
-    "quad_out",
-    "quad_inout",
-    "cubic_in",
-    "cubic_out",
-    "cubic_inout",
-    "quart_in",
-    "quart_out",
-    "quart_inout",
-    "quint_in",
-    "quint_out",
-    "quint_inout",
-    "expo_in",
-    "expo_out",
-    "expo_inout",
-    "circ_in",
-    "circ_out",
-    "circ_inout",
-    "back_in",
-    "back_out",
-    "back_inout"
-];
-
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"3dkiX"}],"cjqq2":[function(require,module,exports) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "SelectEl", ()=>SelectEl);
-var _elements = require("./elements");
-class SelectEl {
-    constructor({ options, prop, currentStart = options[0], onChange }){
-        this.setCurrent = (newCurrent)=>{
-            this.current = newCurrent;
-            this.select.value = this.current;
-            document.documentElement.style.setProperty(this.prop, `var(--${this.current})`);
-        };
-        this.addListener = ()=>{
-            this.select.addEventListener("change", ()=>{
-                this.setCurrent(this.select.value);
-                if (this.onChange) this.onChange(this.select.value);
-            });
-        };
-        this.options = options;
-        this.prop = prop;
-        this.current = currentStart;
-        this.select = (0, _elements.createEl)("select", {
-            id: prop
-        });
-        this.label = (0, _elements.createEl)("label", {
-            for: prop
-        }, prop);
-        this.options.forEach((option)=>{
-            this.select.appendChild((0, _elements.createEl)("option", {
-                value: option
-            }, option));
-        });
-        this.select.value = this.current;
-        this.container = (0, _elements.createEl)("div", {
-            class: "select-container"
-        });
-        this.container.appendChild(this.label);
-        this.container.appendChild(this.select);
-        if (onChange) this.onChange = onChange;
-        this.addListener();
-    }
+function setCharEase(title, charStep = 0.015) {
+    console.log(charStep);
+    let charsCount = title.chars.length;
+    let linesCount = title.lines.length;
+    let chars = title.chars;
+    chars.forEach((char)=>{
+        let line = char.closest(".line");
+        if (!(line instanceof HTMLElement)) return;
+        let lineIndex = line.style.getPropertyValue("--line_index");
+        let charIndexLine = char.style.getPropertyValue("--char_index_line");
+        let totalCharsLine = line.querySelectorAll(".char").length;
+        let lineProgress = Number(lineIndex) / linesCount;
+        let charProgress = Number(charIndexLine) / totalCharsLine;
+        let charEased = easeOutSine(charProgress);
+        let lineEased = easeOutSine(lineProgress);
+        let lineDelay = lineEased * linesCount * charStep * 20;
+        let charDelay = charEased * totalCharsLine * charStep + lineDelay;
+        char.style.setProperty("--char_delay", `${charDelay.toFixed(3)}s`);
+        line.style.setProperty("--line_eased", `${lineEased.toFixed(3)}`);
+    });
 }
 
-},{"./elements":"5JEDD","@parcel/transformer-js/src/esmodule-helpers.js":"3dkiX"}],"5JEDD":[function(require,module,exports) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "createEl", ()=>createEl);
-parcelHelpers.export(exports, "setAttributes", ()=>setAttributes);
-const createEl = (tagName, atts, innerText)=>{
-    const el = document.createElement(tagName);
-    if (innerText) el.innerText = innerText;
-    if (atts) setAttributes(el, atts);
-    return el;
-};
-const setAttributes = (el, atts)=>{
-    for(const key in atts)el.setAttribute(key, atts[key]);
-    return el;
-};
-
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"3dkiX"}]},["huhxN","gg0zR"], "gg0zR", "parcelRequire5197")
+},{"gsap/SplitText":"54FYr","@parcel/transformer-js/src/esmodule-helpers.js":"3dkiX"}]},["huhxN","gg0zR"], "gg0zR", "parcelRequire5197")
 
 //# sourceMappingURL=index.54632f9a.js.map

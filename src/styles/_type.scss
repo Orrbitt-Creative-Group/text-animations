@@ -1,16 +1,14 @@
 h1,
 .title-1 {
     font-weight: 500;
-    font-size: clamp(40px, 33px + 2.143vw, 64px);
+    // font-size: clamp(40px, 33px + 2.143vw, 64px);
+    // font-size: Min(4vw, 57px);
+    font-size: 4vw;
 }
 
 h2,
 .title-2 {
-    font-size: clamp(30.33px, 23px + 2.292vw, 56px);
+    // font-size: clamp(30.33px, 23px + 2.292vw, 56px);
+    font-size: 3.4vw;
     font-weight: 600;
-}
-
-h3,
-.title-3 {
-    font-size: clamp(22px, 15px + 2.321vw, 48px);
 }

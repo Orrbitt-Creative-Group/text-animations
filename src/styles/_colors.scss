@@ -1,13 +1,15 @@
 body {
     --bg: #fafffe;
-    --bg2: #e4eeec;
+    --bg2: #eaf0ef;
+    --bg-top: #e4eeec;
     --text: #00170d;
     --primary: #2f735b;
     --secondary: #ae3f1e;
 
     &.dark-mode {
         --bg: #0e1110;
-        --bg2: #262a28;
+        --bg2: rgb(25, 28, 26);
+        --bg-top: #262a28;
         --text: #d3f3ed;
         --text2: #67817c;
         --primary: #60d6bb;
